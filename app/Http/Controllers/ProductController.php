@@ -12,7 +12,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+
+        $isAdmin = auth()->user()->is_admin;
+        return view('products.index', [
+            'products' => $products,
+            'isAdmin' => $isAdmin,
+        ]);
     }
 
     /**

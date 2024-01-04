@@ -23,7 +23,7 @@
                                         @if (empty($product['image']))
                                             {{ asset('images/default.jpg') }}
                                         @else
-                                            {{ $product['image'] }}
+                                            {{ asset('storage/images/'.$product['image']) }}
                                         @endif
                                     " alt="Product Image" />
                                 </figure>

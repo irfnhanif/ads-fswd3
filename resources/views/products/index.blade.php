@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Catalog') }}
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
                     <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl flex justify-center py-7">Products Catalog</h1>
                     @if ($isAdmin)
                         <div class="flex justify-end mb-8 ml-4">
-                            <a href="{{ route('products.create') }}" class="btn btn-outline">Add Product</a>
+                            <a href="{{ route('products.create', ['product' => 'product' ]) }}" class="btn btn-outline">Add Product</a>
                         </div>
                     @endif
                     <div class="flex flex-wrap space-x-4 justify-center">

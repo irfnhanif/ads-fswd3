@@ -33,11 +33,12 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product_id}', [ProductController::class, 'show'])->name('products.show');
+    
 });
 
 
 Route::middleware(['auth', 'can:isAdmin'])->group(function () {
-    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::get('/products/create/{product}', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product_id}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product_id}', [ProductController::class, 'update'])->name('products.update');

@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl flex justify-center py-7">Products Catalog</h1>
                     @if ($isAdmin)
-                        <div class="flex justify-end mb-8 ml-4">
+                        <div class="flex justify-end mb-8 mr-24">
                             <a href="{{ route('products.create', ['product' => 'product' ]) }}" class="btn btn-outline">Add Product</a>
                         </div>
                     @endif
@@ -36,9 +36,13 @@
                                             <a href="{{ route('products.edit', ['product_id' => $product->id]) }}">
                                                 <img src="{{ asset('svg/edit.svg') }}" alt="Edit" class="w-7 h-7 flex justify-end mr-2" />
                                             </a>
-                                            <a href="{{ route('products.destroy', ['product_id' => $product->id]) }}">
-                                                <img src="{{ asset('svg/bin.svg') }}" alt="Delete" class="w-7 h-7 flex justify-end" />
-                                            </a>
+                                            <form action="{{ route('products.destroy', ['product_id' => $product->id]) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit">
+                                                    <img src="{{ asset('svg/bin.svg') }}" alt="Delete" class="w-7 h-7 flex justify-end" />
+                                                </button>
+                                            </form>
                                         </div>
                                     @else
                                         <div class="card-actions justify-end">
@@ -50,13 +54,13 @@
                             </div>
                         @endforeach
                     </div>
-                    <footer class="footer footer-center mt-7 p-4 bg-gray-200 text-base-content">
-                    <aside>
-                        <p>FSWD 3 - ADS Digital Partner © 2024 - Irfan Hanif Habibi</p>
-                    </aside>
-                    </footer>
                 </div>
             </div>
+            <footer class="footer footer-center p-4 bg-gray-200 text-base-content sm:rounded-lg">
+            <aside>
+                <p>FSWD 3 - ADS Digital Partner © 2024 - Irfan Hanif Habibi</p>
+            </aside>
+            </footer>
         </div>
     </div>
 </x-app-layout>

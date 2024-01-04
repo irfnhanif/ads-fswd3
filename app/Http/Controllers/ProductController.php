@@ -24,9 +24,9 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($product)
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -34,29 +34,52 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $verifiedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'string|max:1000|nullable',
+            'price' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->storeAs('public/images', $imageName);
+
+        Product::create([
+            'name' => $verifiedData['name'],
+            'description' => $verifiedData['description'],
+            'price' => $verifiedData['price'],
+            'image' => $imageName,
+        ]);
+
+        return redirect()->route('products.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($product_id)
     {
-        //
+        $product = Product::find($product_id);
+
+        return $product;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit($product_id)
     {
-        //
+        $product = self::show($product_id);
+
+        return view('products.edit', [
+            'product' => $product,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update($product_id)
     {
         //
     }

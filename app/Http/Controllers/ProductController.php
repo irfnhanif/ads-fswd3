@@ -79,16 +79,53 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($product_id)
+    public function update($product_id, Request $request)
     {
-        //
+        $product = self::show($product_id);
+
+        $verifiedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'string|max:1000|nullable',
+            'price' => 'required|numeric',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|nullable',
+        ]);
+
+        if ($request->image) {
+            $oldImage = $product->image;
+
+            if (!empty($oldImage)) {
+                unlink(storage_path('app/public/images/' . $oldImage));
+            }
+
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->storeAs('public/images', $imageName);
+        } else {
+            $imageName = $product->image;
+        }
+
+        $product->update([
+            'name' => $verifiedData['name'],
+            'description' => $verifiedData['description'],
+            'price' => $verifiedData['price'],
+            'image' => $imageName,
+        ]);
+
+        return redirect()->route('products.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($product_id)
     {
-        //
+        $product = self::show($product_id);
+
+        if (!empty($product->image)) {
+            unlink(storage_path('app/public/images/' . $product->image));
+        }
+
+        $product->delete();
+
+        return redirect()->route('products.index');
     }
 }

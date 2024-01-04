@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <h2 class="text-4xl font-extrabold flex justify-center py-6">Edit Product</h2>
                     <div class="">
-                        <form method="POST" action="{{ route('products.update', ['product_id' => $product->id]) }}">
+                        <form method="POST" enctype="multipart/form-data" action="{{ route('products.update', ['product_id' => $product->id]) }}">
                             @csrf
                             @method('PUT')
 
@@ -22,6 +22,9 @@
                             <input type="text" placeholder="Type here" name="name" value="{{ $product['name'] }}" class="input input-bordered  w-full" />
                             <div class="label">
                             </div>
+                            @error('name')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                             </label>
 
                             <label class="form-control w-full pb-4 max-w-2xl">
@@ -31,6 +34,9 @@
                                 <textarea name="description" value="{{ $product['description'] }}" class="textarea textarea-bordered h-24" placeholder="Product's description"></textarea>
                             <div class="label">
                             </div>
+                            @error('description')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                             </label>
 
                             <label class="form-control w-full pb-4 max-w-2xl">
@@ -41,6 +47,9 @@
                             <div class="label">
                                 <span class="label-text-alt">in decimal (Ex: 120.00)</span>
                             </div>
+                            @error('price')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                             </label>
 
                             <label class="form-control w-full pb-4 max-w-2xl">
@@ -48,6 +57,9 @@
                                 <span class="label-text">Image file</span>
                             </div>
                                 <input type="file" name="image" class="file-input file-input-bordered w-full" />
+                            @error('image')
+                                <div class="text-red-500">{{ $message }}</div>
+                            @enderror
                             </label>
 
                             <div class="flex justify-end pt-4 ">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -12,7 +13,11 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $cartItems = Cart::where('user_id', auth()->user()->id)->get();
+
+        return view('cart.index', [
+            'cartItems' => $cartItems,
+        ]);
     }
 
     /**
@@ -26,9 +31,26 @@ class CartController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($product_id)
     {
-        //
+        $cartItem = Cart::where('user_id', auth()->user()->id)
+            ->where('product_id', $product_id)
+            ->first();
+
+        if ($cartItem) {
+            $cartItem->quantity++;
+            $cartItem->save();
+        } else {
+            Cart::create([
+                'user_id' => auth()->user()->id,
+                'product_id' => $product_id,
+                'quantity' => 1,
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Product added to cart successfully',
+        ]);
     }
 
     /**
@@ -50,7 +72,7 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cart $cart)
+    public function update($cart_id)
     {
         //
     }
@@ -58,7 +80,7 @@ class CartController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cart $cart)
+    public function destroy($cart_id)
     {
         //
     }

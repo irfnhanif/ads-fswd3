@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
@@ -46,7 +47,9 @@ Route::middleware(['auth', 'can:isAdmin'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::put('/cart/{cart_id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/{cart_id}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
 
 

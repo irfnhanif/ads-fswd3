@@ -46,8 +46,8 @@
                                         </div>
                                     @else
                                         <div class="card-actions justify-end">
-                                            <a class="btn btn-neutral">Purchase</a>
-                                            <a class="btn btn-accent">Cart</a>
+                                            <a href="" class="btn btn-neutral">Purchase</a>
+                                            <button data-url="{{ url('api/cart/' . $product->id) }}" class="btn btn-accent add-to-cart">Cart</button>
                                         </div>  
                                     @endif
                                 </div>
@@ -64,3 +64,29 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    var apiToken = "{{ session('api_token') }}";
+
+    document.querySelectorAll('.add-to-cart').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        fetch(button.dataset.url, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + apiToken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Open your modal here and display the message
+            alert(data.message);
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>

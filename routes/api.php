@@ -16,17 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    Route::get('/cart/{cart_id}', [CartController::class, 'show'])->name('cart.show');
-    Route::put('/cart/{cart_id}', [CartController::class, 'update'])->name('cart.update');
-    Route::delete('/cart/{cart_id}', [CartController::class, 'destroy'])->name('cart.destroy');
+Route::middleware('auth')->group(function () {
+    
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/cart/{product_id}', [CartController::class, 'store'])->name('cart.store');
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
-    Route::get('/orders/{order_id}', [OrderController::class, 'show'])->name('orders.show');
-    Route::put('/orders/{order_id}', [OrderController::class, 'update'])->name('orders.update');
-    Route::delete('/orders/{order_id}', [OrderController::class, 'destroy'])->name('orders.destroy');
 });
